@@ -39,22 +39,38 @@ function App() {
           </div>
         </div>
 
-        <div className="products-content">
-          {loading && <p>Cargando los productos...</p>}
-          {error && <p>{error}</p>}
+        {loading && <p>Cargando los productos...</p>}
+        {error && <p>{error}</p>}
 
-          {!loading && !error && products.length === 0 && <p> No hay productos Registrados.</p>}
+        {!loading && !error && products.length === 0 && <p> No hay productos Registrados.</p>}
 
-          {!loading && !error && products.length > 0 && (
-            <ul>
-              {products.map((product) => (
-                <li key={product.id}>
-                  {product.nombre} - ${product.precio}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+        {!loading && !error && products.length > 0 && (
+          <div className="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Producto</th>
+                  <th>Categoria</th>
+                  <th>Marca</th>
+                  <th>Precio</th>
+                  <th>Stock</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {products.map((product) => (
+                  <tr key={product.id}>
+                    <td>{product.nombre}</td>
+                    <td>{product.categoria}</td>
+                    <td>{product.marca}</td>
+                    <td>${Number(product.precio).toLocaleString('es-MX')}</td>
+                    <td>{product.stock}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </section>
     </main>
   )

@@ -28,3 +28,21 @@ export async function createProduct(product) {
 
   return response.json()
 }
+
+// funcion para editar producto
+export async function updateProduct(id, product) {
+  const response = await fetch(`${API_URL}/products/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(product),
+  })
+
+  if (!response.ok) {
+    const error = await response.json()
+    throw new Error(error.message || 'Error al actualizar el producto')
+  }
+
+  return response.json()
+}

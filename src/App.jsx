@@ -1,6 +1,6 @@
 import './App.css'
 import { useEffect, useState } from 'react'
-import { getProducts, createProduct } from './services/productService.js'
+import { getProducts, createProduct, updateProduct } from './services/productService.js'
 
 function App() {
   // Estados
@@ -9,6 +9,7 @@ function App() {
   const [error, setError] = useState('')
   const [showForm, setShowForm] = useState(false)
   const [saving, setSaving] = useState(false)
+  const [editingId, setEditingId] = useState(false)
   const [formData, setFormData] = useState({
     nombre: '',
     categoria: '',
@@ -38,20 +39,43 @@ function App() {
       stock: '',
       descripcion: '',
     })
-
+    setEditingId(null)
     setShowForm(false)
+  }
+
+  // funcion para editar producto
+  function handleEdit(product) {
+    setEditingId(product.id)
+
+    setFormData({
+      nombre: product.nombre,
+      categoria: product.categoria,
+      marca: product.marca,
+      precio: product.precio,
+      stock: product.stock,
+      descripcion: product.descripcion || '',
+    })
+    setShowForm(true)
   }
 
   // funcion para pasar los datos al backend
   async function handleSubmit(event) {
     event.preventDefault()
 
+    setSaving(true)
+
     try {
-      await createProduct({
+      const productData = {
         ...formData,
         precio: Number(formData.precio),
         stock: Number(formData.stock),
-      })
+      }
+
+      if (editingId) {
+        await updateProduct(editingId, productData)
+      } else {
+        await createProduct(productData)
+      }
 
       const response = await getProducts()
       setProducts(response.data)
@@ -95,14 +119,20 @@ function App() {
             <p>Consulta los productos registrados</p>
           </div>
 
-          <button className="btn-primary" onClick={() => setShowForm(true)}>
+          <button
+            className="btn-primary"
+            onClick={() => {
+              resetForm()
+              setShowForm(true)
+            }}
+          >
             + Nuevo Producto
           </button>
         </div>
 
         {showForm && (
           <form className="product-form" onSubmit={handleSubmit}>
-            <h3>Registrar Nuevo Producto</h3>
+            <h3>{editingId ? 'Editar Producto' : 'Registrar Nuevo Producto'}</h3>
 
             <div className="form-grid">
               <div className="form-group">
@@ -191,7 +221,7 @@ function App() {
               </button>
 
               <button type="submit" className="btn-primary" disabled={saving}>
-                {saving ? 'Guardando...' : 'Guardar Producto'}
+                {saving ? 'Guardando...' : editingId ? 'Actualizar Producto' : 'Guardar Producto'}
               </button>
             </div>
           </form>
@@ -212,6 +242,7 @@ function App() {
                   <th>Marca</th>
                   <th>Precio</th>
                   <th>Stock</th>
+                  <th>Acciones</th>
                 </tr>
               </thead>
 
@@ -223,6 +254,12 @@ function App() {
                     <td>{product.marca}</td>
                     <td>${Number(product.precio).toLocaleString('es-MX')}</td>
                     <td>{product.stock}</td>
+                    <td>
+                      <button className="btn-secondary" onClick={() => handleEdit(product)}>
+                        {' '}
+                        Editar
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>

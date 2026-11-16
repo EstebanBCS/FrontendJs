@@ -46,3 +46,15 @@ export async function updateProduct(id, product) {
 
   return response.json()
 }
+
+// funcion para eliminar producto
+export async function deleteProduct(id) {
+  const response = await fetch(`${API_URL}/products/${id}`, {
+    method: 'DELETE',
+  })
+
+  if (!response.ok) {
+    const error = await response.json()
+    throw new Error(error.message || 'Error al eliminar el producto')
+  }
+}

@@ -1,6 +1,11 @@
 import './App.css'
 import { useEffect, useState } from 'react'
-import { getProducts, createProduct, updateProduct } from './services/productService.js'
+import {
+  getProducts,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+} from './services/productService.js'
 
 function App() {
   // Estados
@@ -88,6 +93,23 @@ function App() {
     }
   }
 
+  // funcion para eliminar producto
+  async function handleDelete(id) {
+    const confirmed = window.confirm('¿Seguro que deaseas borrar el producto?')
+
+    if (!confirmed) {
+      return
+    }
+
+    try {
+      await deleteProduct(id)
+
+      const response = await getProducts()
+      setProducts(response.data)
+    } catch (error) {
+      alert(error.message)
+    }
+  }
   useEffect(() => {
     async function loadProducts() {
       try {
@@ -256,8 +278,10 @@ function App() {
                     <td>{product.stock}</td>
                     <td>
                       <button className="btn-secondary" onClick={() => handleEdit(product)}>
-                        {' '}
                         Editar
+                      </button>
+                      <button className="btn-danger" onClick={() => handleDelete(product.id)}>
+                        Eliminar
                       </button>
                     </td>
                   </tr>

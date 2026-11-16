@@ -77,7 +77,7 @@
     margin-bottom: 24px;
   }
 }
-
+/* Estilos para la tabla CRUD */
 .table-container {
   width: 100%;
   overflow-x: auto;
@@ -115,7 +115,7 @@
 .products-table tbody tr:last-child td {
   border-bottom: none;
 }
-
+/* Estilos para botones crud */
 .btn-primary {
   padding: 11px 18px;
   border: none;
@@ -130,7 +130,7 @@
 .btn-primary:hover {
   background-color: #1d4ed8;
 }
-
+/* Estilos para formularios crud */
 .product-form {
   margin-bottom: 28px;
   padding: 24px;
@@ -182,11 +182,11 @@
   gap: 10px;
   margin-top: 22px;
 }
-
+/* Estilos para boton class secondary */
 .btn-secondary {
-  padding: 11px 18px;
+  padding: 8px 12px;
   border: 1px solid #cbd5e1;
-  border-radius: 8px;
+  border-radius: 6px;
   background-color: #ffffff;
   color: #475569;
   font-size: 14px;
@@ -201,4 +201,18 @@
   .form-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* Estilos para boton dnger eliminar */
+.btn-danger {
+  background-color: #dc2626;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.btn-danger:hover {
+  background-color: #b91c1c;
 }

@@ -5,6 +5,7 @@ import {
   createProduct,
   updateProduct,
   deleteProduct,
+  activateProduct,
 } from './services/productService.js'
 
 function App() {
@@ -111,6 +112,25 @@ function App() {
       alert(error.message)
     }
   }
+
+  // funcion para reactivar producto
+  async function handleActivate(id) {
+    const confirmed = window.confirm('¿Seguro que quieres reactivar este producto?')
+
+    if (!confirmed) {
+      return
+    }
+
+    try {
+      await activateProduct(id)
+
+      const response = await getProducts(activeFilter)
+      setProducts(response.data)
+    } catch (error) {
+      alert(error.message)
+    }
+  }
+
   useEffect(() => {
     async function loadProducts() {
       try {
@@ -285,16 +305,32 @@ function App() {
                     <td>${Number(product.precio).toLocaleString('es-MX')}</td>
                     <td>{product.stock}</td>
                     <td>
-                      {activeFilter && (
+                      {activeFilter ? (
                         <>
-                          <button className="btn-secondary" onClick={() => handleEdit(product)}>
+                          <button
+                            type="button"
+                            className="btn-secondary"
+                            onClick={() => handleEdit(product)}
+                          >
                             Editar
                           </button>
 
-                          <button className="btn-danger" onClick={() => handleDelete(product.id)}>
+                          <button
+                            type="button"
+                            className="btn-danger"
+                            onClick={() => handleDelete(product.id)}
+                          >
                             Eliminar
                           </button>
                         </>
+                      ) : (
+                        <button
+                          type="button"
+                          className="btn-primary"
+                          onClick={() => handleActivate(product.id)}
+                        >
+                          Reactivar
+                        </button>
                       )}
                     </td>
                   </tr>

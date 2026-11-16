@@ -58,3 +58,15 @@ export async function deleteProduct(id) {
     throw new Error(error.message || 'Error al eliminar el producto')
   }
 }
+
+// funcion para reactivar producto
+export async function activateProduct(id) {
+  const response = await fetch(`${API_URL}/products/${id}/activate`, {
+    method: 'PATCH',
+  })
+
+  if (!response.ok) {
+    const error = await response.json()
+    throw new Error(error.message || 'Error al reactivar el producto')
+  }
+}

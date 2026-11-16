@@ -116,6 +116,12 @@ function App() {
       await deleteProduct(id)
 
       const response = await getProducts(activeFilter, currentPage, limit)
+
+      if (response.meta.totalPages > 0 && currentPage > response.meta.totalPages) {
+        setCurrentPage(response.meta.totalPages)
+        return
+      }
+
       setProducts(response.data)
       setPagination(response.meta)
     } catch (error) {
@@ -135,6 +141,12 @@ function App() {
       await activateProduct(id)
 
       const response = await getProducts(activeFilter, currentPage, limit)
+
+      if (response.meta.totalPages > 0 && currentPage > response.meta.totalPages) {
+        setCurrentPage(response.meta.totalPages)
+        return
+      }
+
       setProducts(response.data)
       setPagination(response.meta)
     } catch (error) {
@@ -156,6 +168,12 @@ function App() {
     async function loadProducts() {
       try {
         const response = await getProducts(activeFilter, currentPage, limit)
+
+        if (response.meta.totalPages > 0 && currentPage > response.meta.totalPages) {
+          setCurrentPage(response.meta.totalPages)
+          return
+        }
+
         setProducts(response.data)
         setPagination(response.meta)
       } catch (error) {

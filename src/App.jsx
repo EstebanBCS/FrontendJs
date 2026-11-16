@@ -1,12 +1,65 @@
 import './App.css'
 import { useEffect, useState } from 'react'
-import { getProducts } from './services/productService.js'
+import { getProducts, createProduct } from './services/productService.js'
 
 function App() {
+  // Estados
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [showForm, setShowForm] = useState(false)
+  const [formData, setFormData] = useState({
+    nombre: '',
+    categoria: '',
+    marca: '',
+    precio: '',
+    stock: '',
+    descripcion: '',
+  })
+
+  // funcion para la data del formulario
+  function handleChange(event) {
+    const { name, value } = event.target
+
+    setFormData({
+      ...formData,
+      [name]: value,
+    })
+  }
+
+  // funcion para limpiar el formulario al dar cancelar
+  function resetForm() {
+    setFormData({
+      nombre: '',
+      categoria: '',
+      marca: '',
+      precio: '',
+      stock: '',
+      descripcion: '',
+    })
+
+    setShowForm(false)
+  }
+
+  // funcion para pasar los datos al backend
+  async function handleSubmit(event) {
+    event.preventDefault()
+
+    try {
+      await createProduct({
+        ...formData,
+        precio: Number(formData.precio),
+        stock: Number(formData.stock),
+      })
+
+      const response = await getProducts()
+      setProducts(response.data)
+
+      resetForm()
+    } catch (error) {
+      alert(error.message)
+    }
+  }
 
   useEffect(() => {
     async function loadProducts() {
@@ -45,47 +98,87 @@ function App() {
         </div>
 
         {showForm && (
-          <div className="product-form">
+          <form className="product-form" onSubmit={handleSubmit}>
             <h3>Registrar Nuevo Producto</h3>
 
-            <div className="from-grid">
+            <div className="form-grid">
               <div className="form-group">
                 <label>Nombre</label>
-                <input type="text" placeholder="Nombre del Producto" />
+                <input
+                  type="text"
+                  name="nombre"
+                  value={formData.nombre}
+                  onChange={handleChange}
+                  placeholder="Nombre del Producto"
+                />
               </div>
 
               <div className="form-group">
                 <label>Categoria</label>
-                <input type="text" placeholder="Categoria" />
+                <input
+                  type="text"
+                  name="categoria"
+                  value={formData.categoria}
+                  onChange={handleChange}
+                  placeholder="Categoria"
+                />
               </div>
 
               <div className="form-group">
                 <label>Marca</label>
-                <input type="text" placeholder="Marca" />
+                <input
+                  type="text"
+                  name="marca"
+                  value={formData.marca}
+                  onChange={handleChange}
+                  placeholder="Marca"
+                />
               </div>
 
               <div className="form-group">
                 <label>Precio</label>
-                <input type="number" placeholder="Precio" />
+                <input
+                  type="number"
+                  name="precio"
+                  value={formData.precio}
+                  onChange={handleChange}
+                  placeholder="Precio"
+                />
               </div>
 
               <div className="form-group">
                 <label>Stock</label>
-                <input type="text" placeholder="Cantidad Disponible" />
+                <input
+                  type="number"
+                  name="stock"
+                  value={formData.stock}
+                  onChange={handleChange}
+                  placeholder="Cantidad Disponible"
+                />
               </div>
 
               <div className="form-group">
                 <label>Descripcion</label>
-                <input type="text" placeholder="Descripcion del Producto" />
-              </div>
-
-              <div className="form-actions">
-                <button className="btn-secondary" onClick={() => setShowForm(false)}>
-                  Cancelar
-                </button>
+                <input
+                  type="text"
+                  name="descripcion"
+                  value={formData.descripcion}
+                  onChange={handleChange}
+                  placeholder="Descripcion del Producto"
+                />
               </div>
             </div>
-          </div>
+
+            <div className="form-actions">
+              <button type="button" className="btn-secondary" onClick={resetForm}>
+                Cancelar
+              </button>
+
+              <button type="submit" className="btn-primary">
+                Guardar Producto
+              </button>
+            </div>
+          </form>
         )}
 
         {loading && <p>Cargando los productos...</p>}

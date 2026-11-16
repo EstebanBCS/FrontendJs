@@ -9,6 +9,7 @@ import {
 } from './services/productService.js'
 import ProductForm from './components/ProductForm.jsx'
 import ProductTable from './components/ProductTable.jsx'
+import Pagination from './components/Pagination.jsx'
 
 function App() {
   // Estados
@@ -251,31 +252,12 @@ function App() {
               handleActivate={handleActivate}
             />
 
-            <div className="pagination">
-              <button
-                type="button"
-                className="btn-secondary"
-                onClick={handlePreviousPage}
-                disabled={currentPage <= 1 || pagination.totalPages === 0}
-              >
-                Anterior
-              </button>
-
-              <span>
-                {pagination.totalPages === 0
-                  ? 'Sin páginas'
-                  : `Página ${pagination.page} de ${pagination.totalPages}`}
-              </span>
-
-              <button
-                type="button"
-                className="btn-secondary"
-                onClick={handleNextPage}
-                disabled={currentPage >= pagination.totalPages}
-              >
-                Siguiente
-              </button>
-            </div>
+            <Pagination
+              currentPage={currentPage}
+              pagination={pagination}
+              handlePreviousPage={handlePreviousPage}
+              handleNextPage={handleNextPage}
+            />
           </>
         )}
       </section>

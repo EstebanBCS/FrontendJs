@@ -10,6 +10,7 @@ import {
 import ProductForm from './components/ProductForm.jsx'
 import ProductTable from './components/ProductTable.jsx'
 import Pagination from './components/Pagination.jsx'
+import ProductFilter from './components/ProductFilter.jsx'
 
 function App() {
   // Estados
@@ -18,10 +19,10 @@ function App() {
   const [error, setError] = useState('')
   const [showForm, setShowForm] = useState(false)
   const [saving, setSaving] = useState(false)
-  const [editingId, setEditingId] = useState(false)
+  const [editingId, setEditingId] = useState(null)
   const [activeFilter, setActiveFilter] = useState(true)
   const [currentPage, setCurrentPage] = useState(1)
-  const [limit] = useState(10)
+  const limit = 10
   const [pagination, setPagination] = useState({
     total: 0,
     page: 1,
@@ -109,7 +110,7 @@ function App() {
 
   // funcion para eliminar producto
   async function handleDelete(id) {
-    const confirmed = window.confirm('¿Seguro que deaseas borrar el producto?')
+    const confirmed = window.confirm('¿Seguro que deseas borrar el producto?')
 
     if (!confirmed) {
       return
@@ -171,7 +172,7 @@ function App() {
     async function loadProducts() {
       try {
         const response = await getProducts(activeFilter, currentPage, limit)
-
+        setError('')
         if (response.meta.totalPages > 0 && currentPage > response.meta.totalPages) {
           setCurrentPage(response.meta.totalPages)
           return
@@ -202,16 +203,13 @@ function App() {
         <div className="section-header">
           <div>
             <h2>Productos</h2>
-            <select
-              value={activeFilter}
-              onChange={(event) => {
-                setActiveFilter(event.target.value === 'true')
-                setCurrentPage(1)
-              }}
-            >
-              <option value="true">Productos Activos</option>
-              <option value="false">Productos Inactivos</option>
-            </select>
+
+            <ProductFilter
+              activeFilter={activeFilter}
+              setActiveFilter={setActiveFilter}
+              setCurrentPage={setCurrentPage}
+            />
+
             <p>Consulta los productos registrados</p>
           </div>
 

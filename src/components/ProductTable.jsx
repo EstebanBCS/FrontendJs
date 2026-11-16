@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 function ProductImage({ src, alt, onClick }) {
   const [hasError, setHasError] = useState(false)
@@ -24,10 +24,25 @@ function ProductImage({ src, alt, onClick }) {
 
 function ProductTable({ products, activeFilter, handleEdit, handleDelete, handleActivate }) {
   const [selectedImage, setSelectedImage] = useState(null)
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setSelectedImage(null)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [])
+
   return (
     <>
       <div className="table-container">
-        <table>
+        <table className="products-table">
           <thead>
             <tr>
               <th>Imagen</th>

@@ -1,6 +1,6 @@
 .app {
   width: 100%;
-  max-width: 1440px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 40px;
 }
@@ -86,7 +86,7 @@
 .products-table {
   width: 100%;
   border-collapse: collapse;
-  text-align: left;
+  text-align: center;
   white-space: nowrap;
 }
 

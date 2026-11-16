@@ -15,6 +15,7 @@ function App() {
   const [showForm, setShowForm] = useState(false)
   const [saving, setSaving] = useState(false)
   const [editingId, setEditingId] = useState(false)
+  const [activeFilter, setActiveFilter] = useState(true)
   const [formData, setFormData] = useState({
     nombre: '',
     categoria: '',
@@ -113,7 +114,7 @@ function App() {
   useEffect(() => {
     async function loadProducts() {
       try {
-        const response = await getProducts()
+        const response = await getProducts(activeFilter)
         setProducts(response.data)
       } catch (error) {
         setError(error.message)
@@ -123,7 +124,7 @@ function App() {
     }
 
     loadProducts()
-  }, [])
+  }, [activeFilter])
 
   return (
     <main className="app">
@@ -138,6 +139,13 @@ function App() {
         <div className="section-header">
           <div>
             <h2>Productos</h2>
+            <select
+              value={activeFilter}
+              onChange={(event) => setActiveFilter(event.target.value === 'true')}
+            >
+              <option value="true">Productos Activos</option>
+              <option value="false">Productos Inactivos</option>
+            </select>
             <p>Consulta los productos registrados</p>
           </div>
 
@@ -277,12 +285,17 @@ function App() {
                     <td>${Number(product.precio).toLocaleString('es-MX')}</td>
                     <td>{product.stock}</td>
                     <td>
-                      <button className="btn-secondary" onClick={() => handleEdit(product)}>
-                        Editar
-                      </button>
-                      <button className="btn-danger" onClick={() => handleDelete(product.id)}>
-                        Eliminar
-                      </button>
+                      {activeFilter && (
+                        <>
+                          <button className="btn-secondary" onClick={() => handleEdit(product)}>
+                            Editar
+                          </button>
+
+                          <button className="btn-danger" onClick={() => handleDelete(product.id)}>
+                            Eliminar
+                          </button>
+                        </>
+                      )}
                     </td>
                   </tr>
                 ))}

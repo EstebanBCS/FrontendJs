@@ -216,3 +216,15 @@
 .btn-danger:hover {
   background-color: #b91c1c;
 }
+
+/* Estilos para selectot de estado */
+.section-header select {
+  padding: 8px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background-color: white;
+  color: #1e293b;
+  font-size: 14px;
+  margin-top: 10px;
+  cursor: pointer;
+}

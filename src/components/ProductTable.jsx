@@ -1,9 +1,26 @@
+import { useState } from 'react'
+
+function ProductImage({ src, alt }) {
+  const [hasError, setHasError] = useState(false)
+
+  if (!src) {
+    return <span> Sin Imagen </span>
+  }
+
+  if (hasError) {
+    return <span> Imagen No Disponible </span>
+  }
+
+  return <img src={src} alt={alt} className="product-image" onError={() => setHasError(true)} />
+}
+
 function ProductTable({ products, activeFilter, handleEdit, handleDelete, handleActivate }) {
   return (
     <div className="table-container">
       <table>
         <thead>
           <tr>
+            <th>Imagen</th>
             <th>Producto</th>
             <th>Categoria</th>
             <th>Marca</th>
@@ -16,6 +33,13 @@ function ProductTable({ products, activeFilter, handleEdit, handleDelete, handle
         <tbody>
           {products.map((product) => (
             <tr key={product.id}>
+              <td>
+                <ProductImage
+                  key={product.imagen_url}
+                  src={product.imagen_url}
+                  alt={product.nombre}
+                />
+              </td>
               <td>{product.nombre}</td>
               <td>{product.categoria}</td>
               <td>{product.marca}</td>

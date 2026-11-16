@@ -228,3 +228,22 @@
   margin-top: 10px;
   cursor: pointer;
 }
+
+/*Estilos de paginacion*/
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+}
+
+.pagination span {
+  font-size: 14px;
+  color: #64748b;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

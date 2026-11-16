@@ -1,8 +1,8 @@
 const API_URL = import.meta.env.VITE_API_URL
 
 // funcion obtener productos para el catalogo
-export async function getProducts(activo = true) {
-  const response = await fetch(`${API_URL}/products?activo=${activo}`)
+export async function getProducts(activo = true, page = 1, limit = 10) {
+  const response = await fetch(`${API_URL}/products?activo=${activo}&page=${page}&limit=${limit}`)
 
   if (!response.ok) {
     throw new Error('Error al obtener los productos')

@@ -17,6 +17,14 @@ function App() {
   const [saving, setSaving] = useState(false)
   const [editingId, setEditingId] = useState(false)
   const [activeFilter, setActiveFilter] = useState(true)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [limit] = useState(10)
+  const [pagination, setPagination] = useState({
+    total: 0,
+    page: 1,
+    limit: 10,
+    totalPages: 0,
+  })
   const [formData, setFormData] = useState({
     nombre: '',
     categoria: '',
@@ -84,8 +92,9 @@ function App() {
         await createProduct(productData)
       }
 
-      const response = await getProducts()
+      const response = await getProducts(activeFilter, currentPage, limit)
       setProducts(response.data)
+      setPagination(response.meta)
 
       resetForm()
     } catch (error) {
@@ -106,8 +115,9 @@ function App() {
     try {
       await deleteProduct(id)
 
-      const response = await getProducts()
+      const response = await getProducts(activeFilter, currentPage, limit)
       setProducts(response.data)
+      setPagination(response.meta)
     } catch (error) {
       alert(error.message)
     }
@@ -124,18 +134,30 @@ function App() {
     try {
       await activateProduct(id)
 
-      const response = await getProducts(activeFilter)
+      const response = await getProducts(activeFilter, currentPage, limit)
       setProducts(response.data)
+      setPagination(response.meta)
     } catch (error) {
       alert(error.message)
     }
   }
 
+  // funciones para paginacion
+  function handlePreviousPage() {
+    setCurrentPage((prev) => prev - 1)
+  }
+
+  function handleNextPage() {
+    setCurrentPage((prev) => prev + 1)
+  }
+
+  // consultar productos y actualizar la tabla
   useEffect(() => {
     async function loadProducts() {
       try {
-        const response = await getProducts(activeFilter)
+        const response = await getProducts(activeFilter, currentPage, limit)
         setProducts(response.data)
+        setPagination(response.meta)
       } catch (error) {
         setError(error.message)
       } finally {
@@ -144,7 +166,7 @@ function App() {
     }
 
     loadProducts()
-  }, [activeFilter])
+  }, [activeFilter, currentPage, limit])
 
   return (
     <main className="app">
@@ -161,7 +183,10 @@ function App() {
             <h2>Productos</h2>
             <select
               value={activeFilter}
-              onChange={(event) => setActiveFilter(event.target.value === 'true')}
+              onChange={(event) => {
+                setActiveFilter(event.target.value === 'true')
+                setCurrentPage(1)
+              }}
             >
               <option value="true">Productos Activos</option>
               <option value="false">Productos Inactivos</option>
@@ -337,6 +362,31 @@ function App() {
                 ))}
               </tbody>
             </table>
+            <div className="pagination">
+              <button
+                type="button"
+                className="btn-secondary"
+                onClick={handlePreviousPage}
+                disabled={currentPage <= 1 || pagination.totalPages === 0}
+              >
+                Anterior
+              </button>
+
+              <span>
+                {pagination.totalPages === 0
+                  ? 'Sin páginas'
+                  : `Página ${pagination.page} de ${pagination.totalPages}`}
+              </span>
+
+              <button
+                type="button"
+                className="btn-secondary"
+                onClick={handleNextPage}
+                disabled={currentPage >= pagination.totalPages}
+              >
+                Siguiente
+              </button>
+            </div>
           </div>
         )}
       </section>

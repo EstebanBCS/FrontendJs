@@ -247,3 +247,19 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+/* estilos del preview img */
+.image-preview {
+  grid-column: 1 / -1;
+  margin-top: 10px;
+}
+
+.image-preview img {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background-color: #fff;
+  padding: 5px;
+}

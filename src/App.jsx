@@ -36,6 +36,7 @@ function App() {
     precio: '',
     stock: '',
     descripcion: '',
+    imagen_url: '',
   })
 
   // funcion para la data del formulario
@@ -57,6 +58,7 @@ function App() {
       precio: '',
       stock: '',
       descripcion: '',
+      imagen_url: '',
     })
     setEditingId(null)
     setShowForm(false)
@@ -73,6 +75,7 @@ function App() {
       precio: product.precio,
       stock: product.stock,
       descripcion: product.descripcion || '',
+      imagen_url: product.imagen_url || '',
     })
     setShowForm(true)
   }

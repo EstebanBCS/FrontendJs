@@ -82,6 +82,32 @@ function ProductForm({ formData, handleChange, handleSubmit, resetForm, editingI
             maxLength={200}
           />
         </div>
+
+        <div className="form-group">
+          <label>URL de la imagen</label>
+          <input
+            type="url"
+            name="imagen_url"
+            value={formData.imagen_url}
+            onChange={handleChange}
+            placeholder="https://ejemplo.com/imagen.jpg"
+          />
+        </div>
+
+        {formData.imagen_url && (
+          <div className="image-preview">
+            <img
+              src={formData.imagen_url}
+              alt="Vista previa del producto"
+              onError={(event) => {
+                event.target.style.display = 'none'
+              }}
+              onLoad={(event) => {
+                event.target.style.display = 'block'
+              }}
+            />
+          </div>
+        )}
       </div>
 
       <div className="form-actions">

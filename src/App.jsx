@@ -110,6 +110,8 @@ function App() {
                   value={formData.nombre}
                   onChange={handleChange}
                   placeholder="Nombre del Producto"
+                  required
+                  maxLength={50}
                 />
               </div>
 
@@ -121,6 +123,8 @@ function App() {
                   value={formData.categoria}
                   onChange={handleChange}
                   placeholder="Categoria"
+                  required
+                  maxLength={50}
                 />
               </div>
 
@@ -132,6 +136,8 @@ function App() {
                   value={formData.marca}
                   onChange={handleChange}
                   placeholder="Marca"
+                  required
+                  max={50}
                 />
               </div>
 
@@ -143,6 +149,9 @@ function App() {
                   value={formData.precio}
                   onChange={handleChange}
                   placeholder="Precio"
+                  required
+                  min="0.01"
+                  step="0.01"
                 />
               </div>
 
@@ -154,6 +163,9 @@ function App() {
                   value={formData.stock}
                   onChange={handleChange}
                   placeholder="Cantidad Disponible"
+                  required
+                  min="0.01"
+                  step="1"
                 />
               </div>
 
@@ -165,6 +177,7 @@ function App() {
                   value={formData.descripcion}
                   onChange={handleChange}
                   placeholder="Descripcion del Producto"
+                  maxLength={200}
                 />
               </div>
             </div>

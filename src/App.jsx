@@ -8,6 +8,7 @@ function App() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [showForm, setShowForm] = useState(false)
+  const [saving, setSaving] = useState(false)
   const [formData, setFormData] = useState({
     nombre: '',
     categoria: '',
@@ -58,6 +59,8 @@ function App() {
       resetForm()
     } catch (error) {
       alert(error.message)
+    } finally {
+      setSaving(false)
     }
   }
 
@@ -164,7 +167,7 @@ function App() {
                   onChange={handleChange}
                   placeholder="Cantidad Disponible"
                   required
-                  min="0.01"
+                  min="0"
                   step="1"
                 />
               </div>
@@ -187,8 +190,8 @@ function App() {
                 Cancelar
               </button>
 
-              <button type="submit" className="btn-primary">
-                Guardar Producto
+              <button type="submit" className="btn-primary" disabled={saving}>
+                {saving ? 'Guardando...' : 'Guardar Producto'}
               </button>
             </div>
           </form>

@@ -6,6 +6,7 @@ function App() {
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [showForm, setShowForm] = useState(false)
 
   useEffect(() => {
     async function loadProducts() {
@@ -37,7 +38,55 @@ function App() {
             <h2>Productos</h2>
             <p>Consulta los productos registrados</p>
           </div>
+
+          <button className="btn-primary" onClick={() => setShowForm(true)}>
+            + Nuevo Producto
+          </button>
         </div>
+
+        {showForm && (
+          <div className="product-form">
+            <h3>Registrar Nuevo Producto</h3>
+
+            <div className="from-grid">
+              <div className="form-group">
+                <label>Nombre</label>
+                <input type="text" placeholder="Nombre del Producto" />
+              </div>
+
+              <div className="form-group">
+                <label>Categoria</label>
+                <input type="text" placeholder="Categoria" />
+              </div>
+
+              <div className="form-group">
+                <label>Marca</label>
+                <input type="text" placeholder="Marca" />
+              </div>
+
+              <div className="form-group">
+                <label>Precio</label>
+                <input type="number" placeholder="Precio" />
+              </div>
+
+              <div className="form-group">
+                <label>Stock</label>
+                <input type="text" placeholder="Cantidad Disponible" />
+              </div>
+
+              <div className="form-group">
+                <label>Descripcion</label>
+                <input type="text" placeholder="Descripcion del Producto" />
+              </div>
+
+              <div className="form-actions">
+                <button className="btn-secondary" onClick={() => setShowForm(false)}>
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {loading && <p>Cargando los productos...</p>}
         {error && <p>{error}</p>}
